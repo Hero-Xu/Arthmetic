@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组的排序与合并</title>
+</head>
+<body>
+	<script>
+//排序算法用的是快排，合并算法是自己写的，先合并再排序很简单，不过我就想先排序后合并，任性！
+		function arrMerge(arr1, arr2){
+			//快速排序函数
+			function quickSort(arr){
+				if (arr.length<=1) {
+					return arr;
+				};
+				var middleValue = arr.splice(Math.floor(arr.length/2), 1);
+				var left = [];
+				var right = [];
+				for(var i=0; i<arr.length; i++){
+					if (arr[i]<middleValue) {
+						left.push(arr[i]);
+					}else{
+						right.push(arr[i]);
+					}
+				}
+				return quickSort(left).concat(middleValue, quickSort(right));
+			}
+			arr1 = quickSort(arr1);
+			arr2 = quickSort(arr2);
+			console.log('arr1的排序：' + arr1);
+			console.log('arr2的排序：' + arr2);
+			 var newArray = merge(arr1, arr2);
+			//合并函数
+			function merge(arr1, arr2){
+				var arr = [];
+				function pushAndDelete(smallArr){
+					arr.push(smallArr[0]);
+					smallArr.splice(0,1);
+				}
+				while(arr1.length!=0 && arr2.length!=0){
+					arr1[0]<arr2[0]?pushAndDelete(arr1):pushAndDelete(arr2);
+				}
+				//针对数组个数不同的时候
+				if (arr1.length == 0 && arr2.length !=0) {
+					arr = arr.concat(arr2);
+				}else if(arr1.length != 0 && arr2.length == 0){
+					arr = arr.concat(arr1);
+				}
+				return arr;
+			}
+			return newArray;
+		}
+	console.log(arrMerge([1,3,7],[8,4,2,9,5,0,6]));
+	</script>
+</body>
+</html>
